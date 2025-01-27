@@ -1,9 +1,23 @@
-import React ,{ useState } from "react";
+import React , { useState , useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSocket } from "../context/SocketProvider";
 
 const LobbyPage = () => {
   const [userDetails , setUserDetails] = useState({email : "" , roomId : ""});
   const socket = useSocket();
+  const navigate = useNavigate();
+
+  const handleRoomJoin = (data) => {
+    navigate(`/room/${data.roomId}`);
+    console.log(data);
+  }
+
+  useEffect(() => {
+    socket.on("room:join" , handleRoomJoin);
+    return() => {
+      socket.off("room:join" , handleRoomJoin);
+    }
+  } ,[socket , handleRoomJoin])
 
   const onChange = (e) => {
     setUserDetails({...userDetails , [e.target.name] : e.target.value});

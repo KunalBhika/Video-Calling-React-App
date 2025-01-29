@@ -17,4 +17,12 @@ io.on("connection", (socket) => {
         io.to(socket.id).emit("room:join", data);
         console.log(data);
     })
+
+    socket.on("user:call" , (data) => {
+        io.to(data.to).emit("incoming:call" , { from : socket.id , offer : data.offer});
+    })
+
+    socket.on("call:accepted" , (data) => {
+        io.to(data.to).emit("call:accepted" , { from : socket.id , answer : data.answer });
+    })
 });

@@ -25,4 +25,12 @@ io.on("connection", (socket) => {
     socket.on("call:accepted" , (data) => {
         io.to(data.to).emit("call:accepted" , { from : socket.id , answer : data.answer });
     })
+
+    socket.on("peer:nego:needed" , (data) => {
+        io.to(data.to).emit("peer:nego:needed" , { from : socket.id , offer : data.offer });
+    })
+
+    socket.on("peer:nego:ans" , (data) => {
+        io.to(data.to).emit("peer:nego:ans" , { from : socket.id , ans : data.ans });
+    })
 });
